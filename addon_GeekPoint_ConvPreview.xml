@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="GeekPoint_ConvPreview" title="[GP] Conversation Participants as Tooltip" version_string="1.0 b1" version_id="1" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="GeekPoint_ConvPreview_Addon" callback_method="loadClassController" active="1" description=""/>
+    <listener event_id="template_post_render" execute_order="10" callback_class="GeekPoint_ConvPreview_Addon" callback_method="templatePostRender" active="1" description=""/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases/>
+  <route_prefixes/>
+  <style_properties/>
+  <templates>
+    <template title="conversation_list_item_preview_participants" version_id="1" version_string="1.0 b1"><![CDATA[<div class="previewTooltip">
+	<xen:foreach loop="$recipients" value="$recipient">
+		<xen:if is="{$recipient.user_id} == {$conversation.user_id}">
+			<xen:avatar user="$recipient" size="s" />
+		</xen:if>
+	</xen:foreach>
+
+	<div class="text">
+		<div class="previewText">
+			<ol class="listInline">
+				<xen:foreach loop="$recipients" i="$i" value="$recipient">
+					<xen:if is="{$i} <= {$conversation.recipient_count}">
+						<li>
+							<a href="{xen:link members, $recipient}"
+								class="username">{$recipient.username}</a><xen:if is="{$i} < {$conversation.recipient_count}">,</xen:if>
+						</li>
+					</xen:if>
+				</xen:foreach>
+				<xen:comment>
+					<li class="moreLink">... {xen:phrase and_x_more, 'count={xen:number $usernameListLimit}'}</li>
+				</xen:comment>
+			</ol>
+		</div>
+		<div class="posterDate muted">
+			{$conversation.username},
+			<xen:datetime time="{$conversation.start_date}" />,
+			{xen:phrase participants}: {xen:number {$conversation.recipient_count}}
+		</div>
+	</div>
+</div>]]></template>
+  </templates>
+</addon>
